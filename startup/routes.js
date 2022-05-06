@@ -1,5 +1,5 @@
-const videoRoute = require("./routes/video");
+const videoRoute = require("../routes/video");
 
 module.exports = (app) => {
-  app.use("/api/v1/employee", videoRoute);
+  app.use("/api/v1/videos", videoRoute);
 };

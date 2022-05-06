@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
-const port = 3000;
 
 require("./startup/config")(app);
 require("./startup/routes")(app);
-require("logger");
-app.get("/", (req, res) => res.send("Hello World!"));
+require("./startup/logger");
+app.get("/", (req, res) => res.send("Hello Mehdi!"));
+const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

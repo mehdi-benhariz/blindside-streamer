@@ -1,17 +1,19 @@
 const cors = require("cors");
 // const errorHandler = require("../middleware/errorHandler");
 const express = require("express");
-// const fileUploader = require("express-fileupload");
+const fileUploader = require("express-fileupload");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
+require("dotenv").config({
+  path: path.join(process.cwd(), "/config/.env"),
+});
 require("express-async-errors");
 module.exports = (app) => {
   //add middleware to static files
   app.use("/", express.static(path.join(__dirname, "public")));
-
+  app.use(fileUploader());
   //   app.use(errorHandler);
   app.use(
     express.json({
