@@ -1,4 +1,5 @@
 const { getUserByToken } = require("../utils/auth");
+
 exports.checkAuth = async (req, res, next) => {
   let token;
   if (

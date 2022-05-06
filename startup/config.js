@@ -11,15 +11,12 @@ require("dotenv").config({
 });
 require("express-async-errors");
 module.exports = (app) => {
-  //add middleware to static files
-  app.use("/", express.static(path.join(__dirname, "public")));
   app.use(fileUploader());
-  //   app.use(errorHandler);
   app.use(
     express.json({
       limit: "50mb",
     })
-  ); //app.use(fileUploader()); // File uploader middleware
+  );
   app.use(helmet());
   app.use(morgan("tiny"));
   app.use(cookieParser());
@@ -49,5 +46,4 @@ module.exports = (app) => {
     res.setHeader("X-Powered-By", "Mehdi App v0.0.1");
     next();
   });
-  // app.use(express.static(__dirname + "../public"));
 };
