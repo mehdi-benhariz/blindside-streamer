@@ -1,4 +1,6 @@
 const path = require("path");
+const VideoStream = require("../utils/data");
+
 exports.upload = async (req, res) => {
   let sampleFile;
   let uploadPath;
@@ -29,8 +31,9 @@ exports.getVideo = async (req, res) => {
   const videoName = req.body.videoName;
   let videoPath = `${__dirname}/../assets/videos/`;
   if (videoName) videoPath += `${videoName}.mp4`;
-  else videoPath += `Nature_Beautiful.mp4`;
-
+  //default video
+  else videoPath += `video.mp4`;
+  //in case if range was not provided
   if (!range) {
     res.writeHead(200, {
       "Content-Type": "video/mp4",
@@ -40,15 +43,11 @@ exports.getVideo = async (req, res) => {
     return;
   }
 
-  //   const temp =
-  //     "/home/mehdi/Documents/projects/blindSideStreamer/server/assets/videos/Nature_Beautiful.mp4";
-  //!to change later
-  //   videoPath = temp;
   const videoSize = fs.statSync(videoPath).size;
 
   // Parse Range
-  // Example: "bytes=32324-"
   const parts = range.replace(/bytes=/, "").split("-");
+
   const start = parseInt(parts[0], 10);
   const end = parts[1] ? parseInt(parts[1], 10) : videoSize - 1;
   const chunksize = end - start + 1;
@@ -69,7 +68,14 @@ exports.getVideo = async (req, res) => {
 
   // create video read stream for this particular chunk
   const videoStream = fs.createReadStream(videoPath, { start, end });
-
-  // Stream the video chunk to the client
-  videoStream.pipe(res);
+  videoStream
+    .on("data", (chunk) => {
+      const result = res.write(chunk);
+      //   console.log(result);
+      //   if (result) videoStream.pause();
+    })
+    .on("end", () => {
+      res.end("finished!\n");
+    });
+  // .pipe(res);
 };
