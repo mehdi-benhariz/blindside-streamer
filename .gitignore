@@ -2,3 +2,7 @@ node_modules
 config/
 logs/
 assets/videos/
+client/node_modules
+.DS_Store
+.vscode/
+.dist/
