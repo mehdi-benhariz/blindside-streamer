@@ -81,3 +81,17 @@ exports.logout = async (req, res) => {
     res.status(500).send(e.message);
   }
 };
+
+exports.getUserInfo = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select(
+      "-password -isRestricted -__v"
+    );
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+};
